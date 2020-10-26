@@ -1,6 +1,6 @@
 package handler
 
-type HandlerInterface interface {
-	Start()
+type Handler interface {
+	Serve()
 }
 

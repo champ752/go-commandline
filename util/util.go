@@ -5,11 +5,18 @@ import (
 	"os"
 )
 
+type Utilize interface {
+	DisplayMenu() string
+	CheckArgument(argumentPlace int) bool
+	Reset() int
+}
 type Utility struct {
 
 }
 
-
+func CreateUtility() Utilize {
+	return Utility{}
+}
 func  (ut Utility)  DisplayMenu() string {
 	outputString := fmt.Sprintf("%s\n%s\n%s","Please select menu" ,"1 plus" ,"2 minus" )
 	return outputString
