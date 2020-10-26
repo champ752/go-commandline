@@ -43,25 +43,26 @@ func parseArgumentToMenu(argumentPlace int, utility util.Utility) (int, error) {
 }
 
 type CommandLineHandler struct {
-
+	ut util.Utility
 }
 
-func CreateCommandLineHandler() HandlerInterface  {
-	return CommandLineHandler{}
+func CreateCommandLineHandler(utility util.Utility) HandlerInterface  {
+	return CommandLineHandler{
+		ut: utility,
+	}
 }
 
 
 func (h CommandLineHandler) Start()  {
 	var firstNumber, secondNumber, selectedMenu int
-	utility := util.Utility{}
-	selectedMenu, err := parseArgumentToMenu(1, utility)
+	selectedMenu, err := parseArgumentToMenu(1, h.ut)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	for {
 		if selectedMenu == 0 {
-			fmt.Println(utility.DisplayMenu())
+			fmt.Println(h.ut.DisplayMenu())
 			fmt.Print("Please enter command: ")
 			fmt.Scanf("%d\n", &selectedMenu)
 		}
@@ -71,14 +72,14 @@ func (h CommandLineHandler) Start()  {
 			if err := inputHandler(&firstNumber, &secondNumber);
 				err != nil {
 				fmt.Println(err.Error())
-				selectedMenu = utility.Reset()
+				selectedMenu = h.ut.Reset()
 				continue
 			}
 			usecase.Plus(firstNumber, secondNumber)
 		case constant.MINUS:
 			if err := inputHandler(&firstNumber, &secondNumber); err != nil {
 				fmt.Println(err.Error())
-				selectedMenu = utility.Reset()
+				selectedMenu = h.ut.Reset()
 				continue
 			}
 			usecase.Minus(firstNumber, secondNumber)

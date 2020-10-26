@@ -1,8 +1,12 @@
 package main
 
-import "goCmd/handler"
+import (
+	"goCmd/handler"
+	"goCmd/util"
+)
 
 func main() {
-	commandLineHandler := handler.CreateCommandLineHandler()
+	utility := util.Utility{}
+	commandLineHandler := handler.CreateCommandLineHandler(utility)
 	commandLineHandler.Start()
 }
