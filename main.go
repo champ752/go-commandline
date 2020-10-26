@@ -3,6 +3,6 @@ package main
 import "goCmd/handler"
 
 func main() {
-	commandLineHandler := handler.CommandLineHandler{}
+	commandLineHandler := handler.CreateCommandLineHandler()
 	commandLineHandler.Start()
 }

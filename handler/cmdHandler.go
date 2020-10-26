@@ -46,7 +46,7 @@ type CommandLineHandler struct {
 
 }
 
-func createCommandLineHandler() HandlerInterface  {
+func CreateCommandLineHandler() HandlerInterface  {
 	return CommandLineHandler{}
 }
 
