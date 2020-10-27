@@ -11,6 +11,27 @@ import (
 )
 
 
+func  InputHandler(in *os.File) ( int,  int, error) {
+	var firstNumber,secondNumber int
+	if in == nil {
+		in = os.Stdin
+	}
+
+	fmt.Print("Please enter 1st number: ")
+	_, err := fmt.Fscanf(in,"%d\n", &firstNumber)
+	if err != nil {
+		return 0,0,errors.New("invalid 1st number")
+	}
+
+	fmt.Print("Please enter 2nd number: ")
+	_, err = fmt.Fscanf(in,"%d\n", &secondNumber)
+	if err != nil {
+		return 0,0,errors.New("invalid 2nd number")
+	}
+
+	return firstNumber,secondNumber,nil
+}
+
 type CommandLineHandler struct {
 	ut util.Utilize
 	uc usecase.Usecaser
@@ -24,24 +45,9 @@ func CreateCommandLineHandler(utility util.Utilize,uc usecase.Usecaser) Handler 
 }
 
 
-func (h CommandLineHandler) inputHandler(firstNumber *int, secondNumber *int) error {
 
-	fmt.Print("Please enter 1st number: ")
-	_, err := fmt.Scanf("%d\n", firstNumber)
-	if err != nil {
-		return errors.New("invalid 1st number")
-	}
 
-	fmt.Print("Please enter 2nd number: ")
-	_, err = fmt.Scanf("%d\n", secondNumber)
-	if err != nil {
-		return errors.New("invalid 2nd number")
-	}
-
-	return nil
-}
-
-func (h CommandLineHandler) parseArgumentToMenu(argumentPlace int) (int, error) {
+func (h CommandLineHandler) ParseArgumentToMenu(argumentPlace int) (int, error) {
 	if h.ut.CheckArgument(argumentPlace) {
 		argument := os.Args[argumentPlace]
 		if argument != "" {
@@ -57,17 +63,16 @@ func (h CommandLineHandler) parseArgumentToMenu(argumentPlace int) (int, error) 
 }
 
 func (h CommandLineHandler) Minus() (int ,error)  {
-	var firstNumber, secondNumber int
-	if err := h.inputHandler(&firstNumber, &secondNumber); err != nil {
+	firstNumber,secondNumber,err := InputHandler(nil);
+	if err != nil {
 		return 0 ,err
 	}
 	return h.uc.Minus(firstNumber, secondNumber),nil
 }
 
 func (h CommandLineHandler) Plus() (int ,error)  {
-	var firstNumber, secondNumber int
-	if err := h.
-		inputHandler(&firstNumber, &secondNumber); err != nil {
+	firstNumber,secondNumber,err := InputHandler(nil);
+	if err != nil {
 		return 0 ,err
 	}
 	return h.uc.Plus(firstNumber, secondNumber),nil
@@ -75,7 +80,7 @@ func (h CommandLineHandler) Plus() (int ,error)  {
 
 
 func (h CommandLineHandler) Serve()  {
-	selectedMenu, err := h.parseArgumentToMenu(1)
+	selectedMenu, err := h.ParseArgumentToMenu(1)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -105,7 +110,7 @@ func (h CommandLineHandler) Serve()  {
 			}
 			fmt.Println("Result is:", result)
 		}
-		selectedMenu = 0
+		selectedMenu = h.ut.Reset()
 	}
 }
 
