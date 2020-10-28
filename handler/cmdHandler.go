@@ -89,7 +89,10 @@ func (h CommandLineHandler) Serve()  {
 		if selectedMenu == 0 {
 			fmt.Println(h.ut.DisplayMenu())
 			fmt.Print("Please enter command: ")
-			fmt.Scanf("%d\n", &selectedMenu)
+			_,err:=fmt.Scanf("%d\n", &selectedMenu)
+			if err != nil {
+				selectedMenu = h.ut.Reset()
+			}
 		}
 		switch constant.MenuType(selectedMenu) {
 		case constant.PLUS:
@@ -110,7 +113,7 @@ func (h CommandLineHandler) Serve()  {
 			}
 			fmt.Println("Result is:", result)
 		}
-		selectedMenu = h.ut.Reset()
+		selectedMenu = 0
 	}
 }
 
