@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+// pull error to Err1stNumber (constant instead)
 type InputHandlerResult struct {
 	input string
 	firstNumber int
